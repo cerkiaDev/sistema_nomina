@@ -6,6 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # Modificar el comando runserver para usar puerto 3000 por defecto
+    if 'runserver' in sys.argv and len(sys.argv) == 2:
+        sys.argv.append('3000')
+    
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sistema_nomina.settings')
     try:
         from django.core.management import execute_from_command_line
