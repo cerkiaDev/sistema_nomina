@@ -20,5 +20,6 @@ from nomina import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.hello)
+    path('', views.login_view),
+    path('dashboard/', views.dashboard)
 ]
