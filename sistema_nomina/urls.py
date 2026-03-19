@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from nomina import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login_view),
-    path('dashboard/', views.dashboard)
+    path('dashboard/', views.dashboard),
+    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
+    
 ]

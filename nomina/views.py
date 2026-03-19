@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from .models import Employee, Department, Salary
 
 # Create your views here.
 # Vista para el login
@@ -21,4 +22,9 @@ def login_view(request):
 
 # Vista para el dashboard
 def dashboard(request):
-    return render(request, 'nomina/dashboard.html')
+    context = { 
+            'total_empleados': Employee.objects.filter(activo=True).count(),
+            'total_departamentos': Department.objects.filter(activo=True).count(),
+            'total_salarios': Salary.objects.filter(to_date__isnull=True).count(),   
+            }
+    return render(request, 'nomina/dashboard.html', context)
