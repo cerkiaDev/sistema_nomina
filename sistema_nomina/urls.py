@@ -19,10 +19,15 @@ from django.urls import path
 from nomina import views
 from django.contrib.auth import views as auth_views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login_view),
     path('dashboard/', views.dashboard),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
+    path('empleados/', views.empleado_lista, name='empleado-lista'),
+    path('empleados/nuevo/', views.empleado_crear, name='empleado-crear'),
+    path('empleados/<int:pk>/editar/', views.empleado_editar, name='empleado-editar'),
+    path('empleados/<int:pk>/desactivar/', views.empleado_desactivar, name='empleado-desactivar'),
     
 ]
