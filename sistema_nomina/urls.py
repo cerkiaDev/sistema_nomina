@@ -29,5 +29,8 @@ urlpatterns = [
     path('empleados/nuevo/', views.empleado_crear, name='empleado-crear'),
     path('empleados/<int:pk>/editar/', views.empleado_editar, name='empleado-editar'),
     path('empleados/<int:pk>/desactivar/', views.empleado_desactivar, name='empleado-desactivar'),
-    
+    path('departamentos/', views.departamento_lista, name='departamento-lista'),
+    path('departamentos/nuevo/', views.departamento_crear, name='departamento-crear'),
+    path('departamentos/<int:pk>/editar/', views.departamento_editar, name='departamento-editar'),
+    path('departamentos/<int:pk>/desactivar/', views.departamento_desactivar, name='departamento-desactivar'),  
 ]

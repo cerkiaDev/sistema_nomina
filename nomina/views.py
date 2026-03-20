@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import Employee, Department, Salary
-from .forms import EmpleadoForm
+from .forms import EmpleadoForm, DepartamentoForm
 
 # Create your views here.
 # Vista para el login
@@ -78,3 +78,42 @@ def empleado_desactivar(request, pk):
     empleado.activo = False
     empleado.save()
     return redirect('/empleados/')
+
+# vistas para departamentos
+def departamento_lista(request):
+    departamentos = Department.objects.filter(activo=True)
+    return render(request, 'nomina/departamentos/lista.html', {
+        'departamentos': departamentos
+    })
+    
+def departamento_crear(request): 
+    if request.method == 'POST':
+        form = DepartamentoForm(request.POST)
+        if form.is_valid(): 
+            form.save()
+            return redirect('/departamentos/')
+        
+    else: 
+        form = DepartamentoForm()
+    return render(request, 'nomina/departamentos/formulario.html', {
+        'form': form
+    })
+    
+def departamento_editar(request, pk):
+    departamento = Department.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = DepartamentoForm(request.POST, instance=departamento)
+        if form.is_valid():
+            form.save()
+            return redirect('/departamentos/')
+    else:
+        form = DepartamentoForm(instance=departamento)
+    return render(request, 'nomina/departamentos/formulario.html', {
+        'form': form
+        })
+
+def departamento_desactivar(request, pk):
+    departamento = Department.objects.get(pk=pk)
+    departamento.activo = False 
+    departamento.save()
+    return redirect('/departamentos/')

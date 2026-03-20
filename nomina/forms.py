@@ -1,5 +1,5 @@
 from django import forms
-from .models import Employee
+from .models import Employee, Department
 
 class EmpleadoForm(forms.ModelForm):
     class Meta:
@@ -17,4 +17,12 @@ class EmpleadoForm(forms.ModelForm):
             'gender': 'Género',
             'hire_date': 'Fecha de Contrato',
             'correo': 'Correo',
+        }
+
+class DepartamentoForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ['dept_name']
+        labels = {
+            'dept_name': 'Nombre del Departamento',
         }
