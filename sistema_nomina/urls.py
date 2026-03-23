@@ -32,5 +32,8 @@ urlpatterns = [
     path('departamentos/', views.departamento_lista, name='departamento-lista'),
     path('departamentos/nuevo/', views.departamento_crear, name='departamento-crear'),
     path('departamentos/<int:pk>/editar/', views.departamento_editar, name='departamento-editar'),
-    path('departamentos/<int:pk>/desactivar/', views.departamento_desactivar, name='departamento-desactivar'),  
+    path('departamentos/<int:pk>/desactivar/', views.departamento_desactivar, name='departamento-desactivar'), 
+    path('salarios/', views.salario_lista, name='salario-lista'),
+    path('salarios/nuevo/', views.salario_crear, name='salario-crear'),
+    path('salarios/<int:pk>/editar/', views.salario_editar, name='salario-editar'),
 ]

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .models import Employee, Department, Salary
-from .forms import EmpleadoForm, DepartamentoForm
+from .models import Employee, Department, Salary, SalaryAuditLog
+from .forms import EmpleadoForm, DepartamentoForm, SalarioForm
 
 # Create your views here.
 # Vista para el login
@@ -117,3 +117,54 @@ def departamento_desactivar(request, pk):
     departamento.activo = False 
     departamento.save()
     return redirect('/departamentos/')
+
+# Vistas para salarios
+def salario_lista(request):
+    salarios = Salary.objects.filter(to_date__isnull=True).select_related('employee')
+    return render(request, 'nomina/salarios/lista.html', {
+        'salarios': salarios
+    })
+
+def salario_crear(request): 
+    if request.method == 'POST': 
+        form = SalarioForm(request.POST)
+        if form.is_valid():
+            empleado = form.cleaned_data['employee']
+            # cerrar salario anterior
+            Salary.objects.filter(
+                employee=empleado,
+                to_date__isnull=True
+            ).update(to_date=form.cleaned_data['from_date'])
+            
+            salario = form.save()
+            
+            SalaryAuditLog.objects.create(
+                usuario = request.user.username,
+                detalle_cambio = f"Nuevo salario registrado: {salario.salary} ",
+                salario = salario.salary, 
+                employee = empleado
+                
+            )
+            
+            return redirect('/salarios/')
+            
+    else:
+        form = SalarioForm()
+    return render(request, 'nomina/salarios/formulario.html', {
+        'form': form 
+    })
+    
+def salario_editar(request, pk): 
+    salario = Salary.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = SalarioForm(request.POST, instance=salario)
+        if form.is_valid():
+            form.save()
+            return redirect('/salarios/')
+    
+    else: 
+        form = SalarioForm(instance=salario)
+    return render(request, 'nomina/salarios/formulario.html', {
+        'form': form
+    })
+

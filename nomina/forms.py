@@ -1,5 +1,5 @@
 from django import forms
-from .models import Employee, Department
+from .models import Employee, Department, Salary
 
 class EmpleadoForm(forms.ModelForm):
     class Meta:
@@ -26,3 +26,21 @@ class DepartamentoForm(forms.ModelForm):
         labels = {
             'dept_name': 'Nombre del Departamento',
         }
+
+class SalarioForm(forms.ModelForm):
+    class Meta:
+        model = Salary
+        fields = ['employee', 'salary', 'from_date', 'to_date']
+        widgets = {
+            'from_date': forms.DateInput(attrs={'type': 'date'}),
+            'to_date': forms.DateInput(attrs={'type': 'date'})
+        }
+        labels = {
+            'employee': 'Empleado',
+            'salary': 'Salario',
+            'from_date': 'Fecha de Inicio',
+            'to_date': 'Fecha de Fin',
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['to_date'].required = False
