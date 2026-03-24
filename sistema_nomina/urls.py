@@ -36,4 +36,8 @@ urlpatterns = [
     path('salarios/', views.salario_lista, name='salario-lista'),
     path('salarios/nuevo/', views.salario_crear, name='salario-crear'),
     path('salarios/<int:pk>/editar/', views.salario_editar, name='salario-editar'),
+    path('auditoria/', views.auditoria_lista, name='auditoria-lista'),
+    path('asignaciones/', views.asignacion_lista, name='asignacion-lista'),
+    path('asignaciones/nueva/', views.asignacion_crear, name='asignacion-crear'),
+    path('asignaciones/<int:pk>/terminar/', views.asignacion_terminar, name='asignacion-terminar'),
 ]

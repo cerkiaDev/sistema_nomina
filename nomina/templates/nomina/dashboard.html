@@ -1,80 +1,59 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - Sistema de Nómina</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+{% extends 'nomina/base.html' %}
 
-    <nav class="navbar navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand">Sistema de Nómina</a>
-            <form method="POST" action="/logout/">
-                {% csrf_token %}
-            <button type="submit" class="btn btn-outline-light">Cerrar Sesión</button>
-            </form>
-        </div>
-    </nav>
+{% block title %}Dashboard{% endblock %}
 
-    
-    <div class="container mt-4">
-        <h2>Bienvenido, {{ request.user.username }}</h2>
-        <hr>
-        <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="card text-white bg-primary shadow">
-                    <div class="card-body text-center">
-                        <h3>{{ total_empleados }}</h3>
-                        <p>Empleados Activos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-success shadow">
-                    <div class="card-body text-center">
-                        <h3>{{ total_departamentos }}</h3>
-                        <p>Departamentos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-warning shadow">
-                    <div class="card-body text-center">
-                        <h3>{{ total_salarios }}</h3>
-                        <p>Salarios Activos</p>
-                    </div>
-                </div>
+{% block content %}
+<h2>Bienvenido, {{ request.user.username }}</h2>
+<hr>
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary shadow">
+            <div class="card-body text-center">
+                <h3>{{ total_empleados }}</h3>
+                <p>Empleados Activos</p>
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success shadow">
+            <div class="card-body text-center">
+                <h3>{{ total_departamentos }}</h3>
+                <p>Departamentos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning shadow">
+            <div class="card-body text-center">
+                <h3>{{ total_salarios }}</h3>
+                <p>Salarios Activos</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row mt-4">
     <div class="col-md-12">
         <h4>Módulos</h4>
         <hr>
     </div>
     <div class="col-md-3 mb-3">
-        <a href="/empleados/" class="btn btn-primary w-100 p-3">
-            👥 Empleados
-        </a>
+        <a href="/empleados/" class="btn btn-primary w-100 p-3">👥 Empleados</a>
     </div>
     <div class="col-md-3 mb-3">
-        <a href="/departamentos/" class="btn btn-success w-100 p-3">
-            🏢 Departamentos
-        </a>
+        <a href="/departamentos/" class="btn btn-success w-100 p-3">🏢 Departamentos</a>
     </div>
     <div class="col-md-3 mb-3">
-        <a href="/salarios/" class="btn btn-warning w-100 p-3">
-            💰 Salarios
-        </a>
+        <a href="/salarios/" class="btn btn-warning w-100 p-3">💰 Salarios</a>
     </div>
     <div class="col-md-3 mb-3">
-        <a href="/reportes/" class="btn btn-info w-100 p-3">
-            📊 Reportes
-        </a>
+        <a href="/reportes/" class="btn btn-info w-100 p-3">📊 Reportes</a>
+    </div>
+    <div class="col-md-3 mb-3">
+        <a href="/auditoria/" class="btn btn-info w-100 p-3">📋 Auditoría</a>
+    </div>
+    <div class="col-md-3 mb-3">
+        <a href="/asignaciones/" class="btn btn-secondary w-100 p-3">🔗 Asignaciones</a>
     </div>
 </div>
-
-</body>
-</html>
+{% endblock %}

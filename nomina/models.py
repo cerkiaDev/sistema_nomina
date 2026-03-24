@@ -116,3 +116,8 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'{self.user.username} ({self.rol})'
 
+class DeptEmp(models.Model):
+    employee  = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    dept      = models.ForeignKey(Department, on_delete=models.CASCADE)
+    from_date = models.DateField()
+    to_date   = models.DateField(null=True, blank=True)
