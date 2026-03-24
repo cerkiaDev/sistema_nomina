@@ -4,7 +4,11 @@ from django.contrib import messages
 from .models import Employee, Department, Salary, SalaryAuditLog, DeptEmp
 from .forms import EmpleadoForm, DepartamentoForm, SalarioForm, AsignacionForm
 from django.contrib.auth.decorators import login_required
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+import openpyxl
+import io
+from django.http import HttpResponse
 
 # Create your views here.
 # Vista para el login
@@ -215,3 +219,68 @@ def asignacion_terminar(request, pk):
     asignacion.to_date = asignacion.from_date
     asignacion.save()
     return redirect('/asignaciones/')
+
+# reportes 
+
+@login_required
+def reportes(request):
+    return render(request, 'nomina/reportes/index.html')
+
+@login_required
+def reporte_nomina_pdf(request):
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, 800, "Nómina Vigente")
+    
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(50, 760, "Empleado")
+    p.drawString(250, 760, "Salario")
+    p.drawString(400, 760, "Desde")
+    
+    salarios = Salary.objects.filter(
+        to_date__isnull=True
+    ).select_related('employee')
+    
+    y = 740
+    p.setFont("Helvetica", 11)
+    for s in salarios:
+        p.drawString(50, y, str(s.employee))
+        p.drawString(250, y, str(s.salary))
+        p.drawString(400, y, str(s.from_date))
+        y -= 20
+    
+    p.save()
+    buffer.seek(0)
+    
+    return HttpResponse(
+        buffer,
+        content_type='application/pdf',
+        headers={'Content-Disposition': 'attachment; filename="nomina.pdf"'}
+    )
+
+@login_required
+def reporte_nomina_excel(request):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Nómina Vigente'
+    
+    ws.append(['Empleado', 'Salario', 'Desde'])
+    
+    salarios = Salary.objects.filter(
+        to_date__isnull=True
+    ).select_related('employee')
+    
+    for s in salarios:
+        ws.append([str(s.employee), s.salary, str(s.from_date)])
+    
+    buffer = io.BytesIO()
+    wb.save(buffer)
+    buffer.seek(0)
+    
+    return HttpResponse(
+        buffer,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={'Content-Disposition': 'attachment; filename="nomina.xlsx"'}
+    )

@@ -40,4 +40,7 @@ urlpatterns = [
     path('asignaciones/', views.asignacion_lista, name='asignacion-lista'),
     path('asignaciones/nueva/', views.asignacion_crear, name='asignacion-crear'),
     path('asignaciones/<int:pk>/terminar/', views.asignacion_terminar, name='asignacion-terminar'),
+    path('reportes/', views.reportes, name='reportes'),
+    path('reportes/nomina-pdf/', views.reporte_nomina_pdf, name='reporte-nomina-pdf'),
+    path('reportes/nomina-excel/', views.reporte_nomina_excel, name='reporte-nomina-excel'),
 ]
